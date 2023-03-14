@@ -19,7 +19,7 @@ func getgroups(ngid int, gid *_Gid_t) (n int, err error) {
 	r0, _, e1 := syscall_rawSyscall(libc_getgroups_trampoline_addr, uintptr(ngid), uintptr(unsafe.Pointer(gid)), 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -33,7 +33,7 @@ var libc_getgroups_trampoline_addr uintptr
 func setgroups(ngid int, gid *_Gid_t) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setgroups_trampoline_addr, uintptr(ngid), uintptr(unsafe.Pointer(gid)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -48,7 +48,7 @@ func wait4(pid int, wstatus *_C_int, options int, rusage *Rusage) (wpid int, err
 	r0, _, e1 := syscall_syscall6(libc_wait4_trampoline_addr, uintptr(pid), uintptr(unsafe.Pointer(wstatus)), uintptr(options), uintptr(unsafe.Pointer(rusage)), 0, 0)
 	wpid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -63,7 +63,7 @@ func accept(s int, rsa *RawSockaddrAny, addrlen *_Socklen) (fd int, err error) {
 	r0, _, e1 := syscall_syscall(libc_accept_trampoline_addr, uintptr(s), uintptr(unsafe.Pointer(rsa)), uintptr(unsafe.Pointer(addrlen)))
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -77,7 +77,7 @@ var libc_accept_trampoline_addr uintptr
 func bind(s int, addr unsafe.Pointer, addrlen _Socklen) (err error) {
 	_, _, e1 := syscall_syscall(libc_bind_trampoline_addr, uintptr(s), uintptr(addr), uintptr(addrlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -91,7 +91,7 @@ var libc_bind_trampoline_addr uintptr
 func connect(s int, addr unsafe.Pointer, addrlen _Socklen) (err error) {
 	_, _, e1 := syscall_syscall(libc_connect_trampoline_addr, uintptr(s), uintptr(addr), uintptr(addrlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -106,7 +106,7 @@ func socket(domain int, typ int, proto int) (fd int, err error) {
 	r0, _, e1 := syscall_rawSyscall(libc_socket_trampoline_addr, uintptr(domain), uintptr(typ), uintptr(proto))
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -120,7 +120,7 @@ var libc_socket_trampoline_addr uintptr
 func getsockopt(s int, level int, name int, val unsafe.Pointer, vallen *_Socklen) (err error) {
 	_, _, e1 := syscall_syscall6(libc_getsockopt_trampoline_addr, uintptr(s), uintptr(level), uintptr(name), uintptr(val), uintptr(unsafe.Pointer(vallen)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -134,7 +134,7 @@ var libc_getsockopt_trampoline_addr uintptr
 func setsockopt(s int, level int, name int, val unsafe.Pointer, vallen uintptr) (err error) {
 	_, _, e1 := syscall_syscall6(libc_setsockopt_trampoline_addr, uintptr(s), uintptr(level), uintptr(name), uintptr(val), uintptr(vallen), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -148,7 +148,7 @@ var libc_setsockopt_trampoline_addr uintptr
 func getpeername(fd int, rsa *RawSockaddrAny, addrlen *_Socklen) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_getpeername_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(rsa)), uintptr(unsafe.Pointer(addrlen)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -162,7 +162,7 @@ var libc_getpeername_trampoline_addr uintptr
 func getsockname(fd int, rsa *RawSockaddrAny, addrlen *_Socklen) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_getsockname_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(rsa)), uintptr(unsafe.Pointer(addrlen)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -176,7 +176,7 @@ var libc_getsockname_trampoline_addr uintptr
 func Shutdown(s int, how int) (err error) {
 	_, _, e1 := syscall_syscall(libc_shutdown_trampoline_addr, uintptr(s), uintptr(how), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -190,7 +190,7 @@ var libc_shutdown_trampoline_addr uintptr
 func socketpair(domain int, typ int, proto int, fd *[2]int32) (err error) {
 	_, _, e1 := syscall_rawSyscall6(libc_socketpair_trampoline_addr, uintptr(domain), uintptr(typ), uintptr(proto), uintptr(unsafe.Pointer(fd)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -211,7 +211,7 @@ func recvfrom(fd int, p []byte, flags int, from *RawSockaddrAny, fromlen *_Sockl
 	r0, _, e1 := syscall_syscall6(libc_recvfrom_trampoline_addr, uintptr(fd), uintptr(_p0), uintptr(len(p)), uintptr(flags), uintptr(unsafe.Pointer(from)), uintptr(unsafe.Pointer(fromlen)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -231,7 +231,7 @@ func sendto(s int, buf []byte, flags int, to unsafe.Pointer, addrlen _Socklen) (
 	}
 	_, _, e1 := syscall_syscall6(libc_sendto_trampoline_addr, uintptr(s), uintptr(_p0), uintptr(len(buf)), uintptr(flags), uintptr(to), uintptr(addrlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -246,7 +246,7 @@ func recvmsg(s int, msg *Msghdr, flags int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_recvmsg_trampoline_addr, uintptr(s), uintptr(unsafe.Pointer(msg)), uintptr(flags))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -261,7 +261,7 @@ func sendmsg(s int, msg *Msghdr, flags int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_sendmsg_trampoline_addr, uintptr(s), uintptr(unsafe.Pointer(msg)), uintptr(flags))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -276,7 +276,7 @@ func kevent(kq int, change unsafe.Pointer, nchange int, event unsafe.Pointer, ne
 	r0, _, e1 := syscall_syscall6(libc_kevent_trampoline_addr, uintptr(kq), uintptr(change), uintptr(nchange), uintptr(event), uintptr(nevent), uintptr(unsafe.Pointer(timeout)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -295,7 +295,7 @@ func utimes(path string, timeval *[2]Timeval) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_utimes_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(timeval)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -309,7 +309,7 @@ var libc_utimes_trampoline_addr uintptr
 func futimes(fd int, timeval *[2]Timeval) (err error) {
 	_, _, e1 := syscall_syscall(libc_futimes_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(timeval)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -324,7 +324,7 @@ func poll(fds *PollFd, nfds int, timeout int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_poll_trampoline_addr, uintptr(unsafe.Pointer(fds)), uintptr(nfds), uintptr(timeout))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -344,7 +344,7 @@ func Madvise(b []byte, behav int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_madvise_trampoline_addr, uintptr(_p0), uintptr(len(b)), uintptr(behav))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -364,7 +364,7 @@ func Mlock(b []byte) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mlock_trampoline_addr, uintptr(_p0), uintptr(len(b)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -378,7 +378,7 @@ var libc_mlock_trampoline_addr uintptr
 func Mlockall(flags int) (err error) {
 	_, _, e1 := syscall_syscall(libc_mlockall_trampoline_addr, uintptr(flags), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -398,7 +398,7 @@ func Mprotect(b []byte, prot int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mprotect_trampoline_addr, uintptr(_p0), uintptr(len(b)), uintptr(prot))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -418,7 +418,7 @@ func Msync(b []byte, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_msync_trampoline_addr, uintptr(_p0), uintptr(len(b)), uintptr(flags))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -438,7 +438,7 @@ func Munlock(b []byte) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_munlock_trampoline_addr, uintptr(_p0), uintptr(len(b)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -452,7 +452,7 @@ var libc_munlock_trampoline_addr uintptr
 func Munlockall() (err error) {
 	_, _, e1 := syscall_syscall(libc_munlockall_trampoline_addr, 0, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -466,7 +466,7 @@ var libc_munlockall_trampoline_addr uintptr
 func pipe2(p *[2]_C_int, flags int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_pipe2_trampoline_addr, uintptr(unsafe.Pointer(p)), uintptr(flags), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -487,7 +487,7 @@ func Getdents(fd int, buf []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_getdents_trampoline_addr, uintptr(fd), uintptr(_p0), uintptr(len(buf)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -508,7 +508,7 @@ func Getcwd(buf []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_getcwd_trampoline_addr, uintptr(_p0), uintptr(len(buf)), 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -522,7 +522,7 @@ var libc_getcwd_trampoline_addr uintptr
 func ioctl(fd int, req uint, arg uintptr) (err error) {
 	_, _, e1 := syscall_syscall(libc_ioctl_trampoline_addr, uintptr(fd), uintptr(req), uintptr(arg))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -530,7 +530,7 @@ func ioctl(fd int, req uint, arg uintptr) (err error) {
 func ioctlPtr(fd int, req uint, arg unsafe.Pointer) (err error) {
 	_, _, e1 := syscall_syscall(libc_ioctl_trampoline_addr, uintptr(fd), uintptr(req), uintptr(arg))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -550,7 +550,7 @@ func sysctl(mib []_C_int, old *byte, oldlen *uintptr, new *byte, newlen uintptr)
 	}
 	_, _, e1 := syscall_syscall6(libc_sysctl_trampoline_addr, uintptr(_p0), uintptr(len(mib)), uintptr(unsafe.Pointer(old)), uintptr(unsafe.Pointer(oldlen)), uintptr(unsafe.Pointer(new)), uintptr(newlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -565,7 +565,7 @@ func ppoll(fds *PollFd, nfds int, timeout *Timespec, sigmask *Sigset_t) (n int, 
 	r0, _, e1 := syscall_syscall6(libc_ppoll_trampoline_addr, uintptr(unsafe.Pointer(fds)), uintptr(nfds), uintptr(unsafe.Pointer(timeout)), uintptr(unsafe.Pointer(sigmask)), 0, 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -584,7 +584,7 @@ func Access(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_access_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -598,7 +598,7 @@ var libc_access_trampoline_addr uintptr
 func Adjtime(delta *Timeval, olddelta *Timeval) (err error) {
 	_, _, e1 := syscall_syscall(libc_adjtime_trampoline_addr, uintptr(unsafe.Pointer(delta)), uintptr(unsafe.Pointer(olddelta)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -617,7 +617,7 @@ func Chdir(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_chdir_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -636,7 +636,7 @@ func Chflags(path string, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_chflags_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(flags), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -655,7 +655,7 @@ func Chmod(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_chmod_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -674,7 +674,7 @@ func Chown(path string, uid int, gid int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_chown_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -693,7 +693,7 @@ func Chroot(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_chroot_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -707,7 +707,7 @@ var libc_chroot_trampoline_addr uintptr
 func ClockGettime(clockid int32, time *Timespec) (err error) {
 	_, _, e1 := syscall_syscall(libc_clock_gettime_trampoline_addr, uintptr(clockid), uintptr(unsafe.Pointer(time)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -721,7 +721,7 @@ var libc_clock_gettime_trampoline_addr uintptr
 func Close(fd int) (err error) {
 	_, _, e1 := syscall_syscall(libc_close_trampoline_addr, uintptr(fd), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -736,7 +736,7 @@ func Dup(fd int) (nfd int, err error) {
 	r0, _, e1 := syscall_syscall(libc_dup_trampoline_addr, uintptr(fd), 0, 0)
 	nfd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -750,7 +750,7 @@ var libc_dup_trampoline_addr uintptr
 func Dup2(from int, to int) (err error) {
 	_, _, e1 := syscall_syscall(libc_dup2_trampoline_addr, uintptr(from), uintptr(to), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -764,7 +764,7 @@ var libc_dup2_trampoline_addr uintptr
 func Dup3(from int, to int, flags int) (err error) {
 	_, _, e1 := syscall_syscall(libc_dup3_trampoline_addr, uintptr(from), uintptr(to), uintptr(flags))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -794,7 +794,7 @@ func Faccessat(dirfd int, path string, mode uint32, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_faccessat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(flags), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -808,7 +808,7 @@ var libc_faccessat_trampoline_addr uintptr
 func Fchdir(fd int) (err error) {
 	_, _, e1 := syscall_syscall(libc_fchdir_trampoline_addr, uintptr(fd), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -822,7 +822,7 @@ var libc_fchdir_trampoline_addr uintptr
 func Fchflags(fd int, flags int) (err error) {
 	_, _, e1 := syscall_syscall(libc_fchflags_trampoline_addr, uintptr(fd), uintptr(flags), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -836,7 +836,7 @@ var libc_fchflags_trampoline_addr uintptr
 func Fchmod(fd int, mode uint32) (err error) {
 	_, _, e1 := syscall_syscall(libc_fchmod_trampoline_addr, uintptr(fd), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -855,7 +855,7 @@ func Fchmodat(dirfd int, path string, mode uint32, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_fchmodat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(flags), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -869,7 +869,7 @@ var libc_fchmodat_trampoline_addr uintptr
 func Fchown(fd int, uid int, gid int) (err error) {
 	_, _, e1 := syscall_syscall(libc_fchown_trampoline_addr, uintptr(fd), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -888,7 +888,7 @@ func Fchownat(dirfd int, path string, uid int, gid int, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_fchownat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(uid), uintptr(gid), uintptr(flags), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -902,7 +902,7 @@ var libc_fchownat_trampoline_addr uintptr
 func Flock(fd int, how int) (err error) {
 	_, _, e1 := syscall_syscall(libc_flock_trampoline_addr, uintptr(fd), uintptr(how), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -917,7 +917,7 @@ func Fpathconf(fd int, name int) (val int, err error) {
 	r0, _, e1 := syscall_syscall(libc_fpathconf_trampoline_addr, uintptr(fd), uintptr(name), 0)
 	val = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -931,7 +931,7 @@ var libc_fpathconf_trampoline_addr uintptr
 func Fstat(fd int, stat *Stat_t) (err error) {
 	_, _, e1 := syscall_syscall(libc_fstat_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -950,7 +950,7 @@ func Fstatat(fd int, path string, stat *Stat_t, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_fstatat_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), uintptr(flags), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -964,7 +964,7 @@ var libc_fstatat_trampoline_addr uintptr
 func Fstatfs(fd int, stat *Statfs_t) (err error) {
 	_, _, e1 := syscall_syscall(libc_fstatfs_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -978,7 +978,7 @@ var libc_fstatfs_trampoline_addr uintptr
 func Fsync(fd int) (err error) {
 	_, _, e1 := syscall_syscall(libc_fsync_trampoline_addr, uintptr(fd), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -992,7 +992,7 @@ var libc_fsync_trampoline_addr uintptr
 func Ftruncate(fd int, length int64) (err error) {
 	_, _, e1 := syscall_syscall6(libc_ftruncate_trampoline_addr, uintptr(fd), 0, uintptr(length), uintptr(length>>32), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1043,7 +1043,7 @@ func Getpgid(pid int) (pgid int, err error) {
 	r0, _, e1 := syscall_rawSyscall(libc_getpgid_trampoline_addr, uintptr(pid), 0, 0)
 	pgid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1094,7 +1094,7 @@ func Getpriority(which int, who int) (prio int, err error) {
 	r0, _, e1 := syscall_syscall(libc_getpriority_trampoline_addr, uintptr(which), uintptr(who), 0)
 	prio = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1108,7 +1108,7 @@ var libc_getpriority_trampoline_addr uintptr
 func Getrlimit(which int, lim *Rlimit) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_getrlimit_trampoline_addr, uintptr(which), uintptr(unsafe.Pointer(lim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1123,7 +1123,7 @@ func Getrtable() (rtable int, err error) {
 	r0, _, e1 := syscall_rawSyscall(libc_getrtable_trampoline_addr, 0, 0, 0)
 	rtable = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1137,7 +1137,7 @@ var libc_getrtable_trampoline_addr uintptr
 func Getrusage(who int, rusage *Rusage) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_getrusage_trampoline_addr, uintptr(who), uintptr(unsafe.Pointer(rusage)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1152,7 +1152,7 @@ func Getsid(pid int) (sid int, err error) {
 	r0, _, e1 := syscall_rawSyscall(libc_getsid_trampoline_addr, uintptr(pid), 0, 0)
 	sid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1166,7 +1166,7 @@ var libc_getsid_trampoline_addr uintptr
 func Gettimeofday(tv *Timeval) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_gettimeofday_trampoline_addr, uintptr(unsafe.Pointer(tv)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1204,7 +1204,7 @@ var libc_issetugid_trampoline_addr uintptr
 func Kill(pid int, signum syscall.Signal) (err error) {
 	_, _, e1 := syscall_syscall(libc_kill_trampoline_addr, uintptr(pid), uintptr(signum), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1219,7 +1219,7 @@ func Kqueue() (fd int, err error) {
 	r0, _, e1 := syscall_syscall(libc_kqueue_trampoline_addr, 0, 0, 0)
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1238,7 +1238,7 @@ func Lchown(path string, uid int, gid int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_lchown_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1262,7 +1262,7 @@ func Link(path string, link string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_link_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1286,7 +1286,7 @@ func Linkat(pathfd int, path string, linkfd int, link string, flags int) (err er
 	}
 	_, _, e1 := syscall_syscall6(libc_linkat_trampoline_addr, uintptr(pathfd), uintptr(unsafe.Pointer(_p0)), uintptr(linkfd), uintptr(unsafe.Pointer(_p1)), uintptr(flags), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1300,7 +1300,7 @@ var libc_linkat_trampoline_addr uintptr
 func Listen(s int, backlog int) (err error) {
 	_, _, e1 := syscall_syscall(libc_listen_trampoline_addr, uintptr(s), uintptr(backlog), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1319,7 +1319,7 @@ func Lstat(path string, stat *Stat_t) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_lstat_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1338,7 +1338,7 @@ func Mkdir(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mkdir_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1357,7 +1357,7 @@ func Mkdirat(dirfd int, path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mkdirat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(mode))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1376,7 +1376,7 @@ func Mkfifo(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mkfifo_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1395,7 +1395,7 @@ func Mkfifoat(dirfd int, path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mkfifoat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(mode))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1414,7 +1414,7 @@ func Mknod(path string, mode uint32, dev int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_mknod_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(dev))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1433,7 +1433,7 @@ func Mknodat(dirfd int, path string, mode uint32, dev int) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_mknodat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(dev), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1447,7 +1447,7 @@ var libc_mknodat_trampoline_addr uintptr
 func Nanosleep(time *Timespec, leftover *Timespec) (err error) {
 	_, _, e1 := syscall_syscall(libc_nanosleep_trampoline_addr, uintptr(unsafe.Pointer(time)), uintptr(unsafe.Pointer(leftover)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1467,7 +1467,7 @@ func Open(path string, mode int, perm uint32) (fd int, err error) {
 	r0, _, e1 := syscall_syscall(libc_open_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(perm))
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1487,7 +1487,7 @@ func Openat(dirfd int, path string, mode int, perm uint32) (fd int, err error) {
 	r0, _, e1 := syscall_syscall6(libc_openat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(perm), 0, 0)
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1507,7 +1507,7 @@ func Pathconf(path string, name int) (val int, err error) {
 	r0, _, e1 := syscall_syscall(libc_pathconf_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(name), 0)
 	val = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1528,7 +1528,7 @@ func pread(fd int, p []byte, offset int64) (n int, err error) {
 	r0, _, e1 := syscall_syscall6(libc_pread_trampoline_addr, uintptr(fd), uintptr(_p0), uintptr(len(p)), 0, uintptr(offset), uintptr(offset>>32))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1549,7 +1549,7 @@ func pwrite(fd int, p []byte, offset int64) (n int, err error) {
 	r0, _, e1 := syscall_syscall6(libc_pwrite_trampoline_addr, uintptr(fd), uintptr(_p0), uintptr(len(p)), 0, uintptr(offset), uintptr(offset>>32))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1570,7 +1570,7 @@ func read(fd int, p []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_read_trampoline_addr, uintptr(fd), uintptr(_p0), uintptr(len(p)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1596,7 +1596,7 @@ func Readlink(path string, buf []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_readlink_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(_p1), uintptr(len(buf)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1622,7 +1622,7 @@ func Readlinkat(dirfd int, path string, buf []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall6(libc_readlinkat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(_p1), uintptr(len(buf)), 0, 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1646,7 +1646,7 @@ func Rename(from string, to string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_rename_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1670,7 +1670,7 @@ func Renameat(fromfd int, from string, tofd int, to string) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_renameat_trampoline_addr, uintptr(fromfd), uintptr(unsafe.Pointer(_p0)), uintptr(tofd), uintptr(unsafe.Pointer(_p1)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1689,7 +1689,7 @@ func Revoke(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_revoke_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1708,7 +1708,7 @@ func Rmdir(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_rmdir_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1723,7 +1723,7 @@ func Seek(fd int, offset int64, whence int) (newoffset int64, err error) {
 	r0, r1, e1 := syscall_syscall6(libc_lseek_trampoline_addr, uintptr(fd), 0, uintptr(offset), uintptr(offset>>32), uintptr(whence), 0)
 	newoffset = int64(int64(r1)<<32 | int64(r0))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1738,7 +1738,7 @@ func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err
 	r0, _, e1 := syscall_syscall6(libc_select_trampoline_addr, uintptr(nfd), uintptr(unsafe.Pointer(r)), uintptr(unsafe.Pointer(w)), uintptr(unsafe.Pointer(e)), uintptr(unsafe.Pointer(timeout)), 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1752,7 +1752,7 @@ var libc_select_trampoline_addr uintptr
 func Setegid(egid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setegid_trampoline_addr, uintptr(egid), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1766,7 +1766,7 @@ var libc_setegid_trampoline_addr uintptr
 func Seteuid(euid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_seteuid_trampoline_addr, uintptr(euid), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1780,7 +1780,7 @@ var libc_seteuid_trampoline_addr uintptr
 func Setgid(gid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setgid_trampoline_addr, uintptr(gid), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1799,7 +1799,7 @@ func Setlogin(name string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_setlogin_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1813,7 +1813,7 @@ var libc_setlogin_trampoline_addr uintptr
 func Setpgid(pid int, pgid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setpgid_trampoline_addr, uintptr(pid), uintptr(pgid), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1827,7 +1827,7 @@ var libc_setpgid_trampoline_addr uintptr
 func Setpriority(which int, who int, prio int) (err error) {
 	_, _, e1 := syscall_syscall(libc_setpriority_trampoline_addr, uintptr(which), uintptr(who), uintptr(prio))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1841,7 +1841,7 @@ var libc_setpriority_trampoline_addr uintptr
 func Setregid(rgid int, egid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setregid_trampoline_addr, uintptr(rgid), uintptr(egid), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1855,7 +1855,7 @@ var libc_setregid_trampoline_addr uintptr
 func Setreuid(ruid int, euid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setreuid_trampoline_addr, uintptr(ruid), uintptr(euid), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1869,7 +1869,7 @@ var libc_setreuid_trampoline_addr uintptr
 func Setresgid(rgid int, egid int, sgid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setresgid_trampoline_addr, uintptr(rgid), uintptr(egid), uintptr(sgid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1883,7 +1883,7 @@ var libc_setresgid_trampoline_addr uintptr
 func Setresuid(ruid int, euid int, suid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setresuid_trampoline_addr, uintptr(ruid), uintptr(euid), uintptr(suid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1897,7 +1897,7 @@ var libc_setresuid_trampoline_addr uintptr
 func Setrlimit(which int, lim *Rlimit) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setrlimit_trampoline_addr, uintptr(which), uintptr(unsafe.Pointer(lim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1911,7 +1911,7 @@ var libc_setrlimit_trampoline_addr uintptr
 func Setrtable(rtable int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setrtable_trampoline_addr, uintptr(rtable), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1926,7 +1926,7 @@ func Setsid() (pid int, err error) {
 	r0, _, e1 := syscall_rawSyscall(libc_setsid_trampoline_addr, 0, 0, 0)
 	pid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1940,7 +1940,7 @@ var libc_setsid_trampoline_addr uintptr
 func Settimeofday(tp *Timeval) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_settimeofday_trampoline_addr, uintptr(unsafe.Pointer(tp)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1954,7 +1954,7 @@ var libc_settimeofday_trampoline_addr uintptr
 func Setuid(uid int) (err error) {
 	_, _, e1 := syscall_rawSyscall(libc_setuid_trampoline_addr, uintptr(uid), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1973,7 +1973,7 @@ func Stat(path string, stat *Stat_t) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_stat_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1992,7 +1992,7 @@ func Statfs(path string, stat *Statfs_t) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_statfs_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2016,7 +2016,7 @@ func Symlink(path string, link string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_symlink_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2040,7 +2040,7 @@ func Symlinkat(oldpath string, newdirfd int, newpath string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_symlinkat_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(newdirfd), uintptr(unsafe.Pointer(_p1)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2054,7 +2054,7 @@ var libc_symlinkat_trampoline_addr uintptr
 func Sync() (err error) {
 	_, _, e1 := syscall_syscall(libc_sync_trampoline_addr, 0, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2073,7 +2073,7 @@ func Truncate(path string, length int64) (err error) {
 	}
 	_, _, e1 := syscall_syscall6(libc_truncate_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, uintptr(length), uintptr(length>>32), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2104,7 +2104,7 @@ func Unlink(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_unlink_trampoline_addr, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2123,7 +2123,7 @@ func Unlinkat(dirfd int, path string, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_unlinkat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(flags))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2142,7 +2142,7 @@ func Unmount(path string, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(libc_unmount_trampoline_addr, uintptr(unsafe.Pointer(_p0)), uintptr(flags), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2163,7 +2163,7 @@ func write(fd int, p []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_write_trampoline_addr, uintptr(fd), uintptr(_p0), uintptr(len(p)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2178,7 +2178,7 @@ func mmap(addr uintptr, length uintptr, prot int, flag int, fd int, pos int64) (
 	r0, _, e1 := syscall_syscall9(libc_mmap_trampoline_addr, uintptr(addr), uintptr(length), uintptr(prot), uintptr(flag), uintptr(fd), 0, uintptr(pos), uintptr(pos>>32), 0)
 	ret = uintptr(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2192,7 +2192,7 @@ var libc_mmap_trampoline_addr uintptr
 func munmap(addr uintptr, length uintptr) (err error) {
 	_, _, e1 := syscall_syscall(libc_munmap_trampoline_addr, uintptr(addr), uintptr(length), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2207,7 +2207,7 @@ func readlen(fd int, buf *byte, nbuf int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_read_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(buf)), uintptr(nbuf))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2218,7 +2218,7 @@ func writelen(fd int, buf *byte, nbuf int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(libc_write_trampoline_addr, uintptr(fd), uintptr(unsafe.Pointer(buf)), uintptr(nbuf))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -2233,7 +2233,7 @@ func utimensat(dirfd int, path string, times *[2]Timespec, flags int) (err error
 	}
 	_, _, e1 := syscall_syscall6(libc_utimensat_trampoline_addr, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(times)), uintptr(flags), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }

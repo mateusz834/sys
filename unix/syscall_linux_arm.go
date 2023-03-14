@@ -100,7 +100,7 @@ func Utime(path string, buf *Utimbuf) error {
 func Fadvise(fd int, offset int64, length int64, advice int) (err error) {
 	_, _, e1 := Syscall6(SYS_ARM_FADVISE64_64, uintptr(fd), uintptr(advice), uintptr(offset), uintptr(offset>>32), uintptr(length), uintptr(length>>32))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }

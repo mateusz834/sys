@@ -2330,7 +2330,7 @@ func Klogset(typ int, arg int) (err error) {
 	var p unsafe.Pointer
 	_, _, errno := Syscall(SYS_SYSLOG, uintptr(typ), uintptr(p), uintptr(arg))
 	if errno != 0 {
-		return errnoErr(errno)
+		return errno
 	}
 	return nil
 }

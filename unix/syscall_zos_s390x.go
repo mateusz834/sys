@@ -259,7 +259,7 @@ func Ptsname(fd int) (name string, err error) {
 	r0, _, e1 := syscall_syscall(SYS___PTSNAME_A, uintptr(fd), 0, 0)
 	name = u2s(unsafe.Pointer(r0))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -280,7 +280,7 @@ func Close(fd int) (err error) {
 		_, _, e1 = syscall_syscall(SYS_CLOSE, uintptr(fd), 0, 0)
 	}
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -422,7 +422,7 @@ func Getcwd(buf []byte) (n int, err error) {
 	_, _, e := syscall_syscall(SYS___GETCWD_A, uintptr(p), uintptr(len(buf)), 0)
 	n = clen(buf) + 1
 	if e != 0 {
-		err = errnoErr(e)
+		err = e
 	}
 	return
 }
@@ -934,7 +934,7 @@ func GetsockoptTCPInfo(fd, level, opt int) (*TCPInfo, error) {
 
 	EZBNMIF4 := svcLoad(&svcNameTable[svc_EZBNMIF4][0])
 	if EZBNMIF4 == nil {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 
 	// GetGlobalStats EZBNMIF4 call
@@ -948,13 +948,13 @@ func GetsockoptTCPInfo(fd, level, opt int) (*TCPInfo, error) {
 
 	// outputDesc field is filled by EZBNMIF4 on success
 	if returnCode != 0 || request.header.outputDesc.offset == 0 {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 
 	// Check that EZBNMIF4 returned a nwmRecHeader
 	recHeader := (*nwmRecHeader)(unsafe.Pointer(&responseBuffer[request.header.outputDesc.offset]))
 	if recHeader.ident != nwmRecHeaderIdentifier {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 
 	// Parse nwmTriplets to get offsets of returned entries
@@ -975,7 +975,7 @@ func GetsockoptTCPInfo(fd, level, opt int) (*TCPInfo, error) {
 		switch *ptr {
 		case nwmTCPStatsIdentifier:
 			if tcpStats != nil {
-				return nil, errnoErr(EINVAL)
+				return nil, EINVAL
 			}
 			tcpStats = (*nwmTCPStatsEntry)(unsafe.Pointer(ptr))
 		case nwmIPStatsIdentifier:
@@ -984,11 +984,11 @@ func GetsockoptTCPInfo(fd, level, opt int) (*TCPInfo, error) {
 		case nwmICMPGStatsEntry:
 		case nwmICMPTStatsEntry:
 		default:
-			return nil, errnoErr(EINVAL)
+			return nil, EINVAL
 		}
 	}
 	if tcpStats == nil {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 
 	// GetConnectionDetail EZBNMIF4 call
@@ -1012,7 +1012,7 @@ func GetsockoptTCPInfo(fd, level, opt int) (*TCPInfo, error) {
 	socklen := _Socklen(SizeofSockaddrAny)
 	err := getsockname(fd, &localSockaddr, &socklen)
 	if err != nil {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 	if localSockaddr.Addr.Family == AF_INET {
 		localSockaddr := (*RawSockaddrInet4)(unsafe.Pointer(&localSockaddr.Addr))
@@ -1060,13 +1060,13 @@ func GetsockoptTCPInfo(fd, level, opt int) (*TCPInfo, error) {
 
 	// outputDesc field is filled by EZBNMIF4 on success
 	if returnCode != 0 || request.header.outputDesc.offset == 0 {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 
 	// Check that EZBNMIF4 returned a nwmConnEntry
 	conn := (*nwmConnEntry)(unsafe.Pointer(&responseBuffer[request.header.outputDesc.offset]))
 	if conn.ident != nwmTCPConnIdentifier {
-		return nil, errnoErr(EINVAL)
+		return nil, EINVAL
 	}
 
 	// Copy data from the returned data structures into tcpInfo
@@ -1210,7 +1210,7 @@ func Opendir(name string) (uintptr, error) {
 	dir, _, e := syscall_syscall(SYS___OPENDIR_A, uintptr(unsafe.Pointer(p)), 0, 0)
 	runtime.KeepAlive(unsafe.Pointer(p))
 	if e != 0 {
-		err = errnoErr(e)
+		err = e
 	}
 	return dir, err
 }
@@ -1230,7 +1230,7 @@ func Readdir(dir uintptr) (*Dirent, error) {
 	e, _, _ := syscall_syscall(SYS___READDIR_R_A, dir, uintptr(unsafe.Pointer(&ent)), uintptr(unsafe.Pointer(&res)))
 	var err error
 	if e != 0 {
-		err = errnoErr(Errno(e))
+		err = Errno(e)
 	}
 	if res == 0 {
 		return nil, err
@@ -1241,7 +1241,7 @@ func Readdir(dir uintptr) (*Dirent, error) {
 func readdir_r(dirp uintptr, entry *direntLE, result **direntLE) (err error) {
 	r0, _, e1 := syscall_syscall(SYS___READDIR_R_A, dirp, uintptr(unsafe.Pointer(entry)), uintptr(unsafe.Pointer(result)))
 	if int64(r0) == -1 {
-		err = errnoErr(Errno(e1))
+		err = Errno(e1)
 	}
 	return
 }
@@ -1249,7 +1249,7 @@ func readdir_r(dirp uintptr, entry *direntLE, result **direntLE) (err error) {
 func Closedir(dir uintptr) error {
 	_, _, e := syscall_syscall(SYS_CLOSEDIR, dir, 0, 0)
 	if e != 0 {
-		return errnoErr(e)
+		return e
 	}
 	return nil
 }
@@ -1262,7 +1262,7 @@ func Telldir(dir uintptr) (int, error) {
 	p, _, e := syscall_syscall(SYS_TELLDIR, dir, 0, 0)
 	pos := int(p)
 	if pos == -1 {
-		return pos, errnoErr(e)
+		return pos, e
 	}
 	return pos, nil
 }
@@ -1325,7 +1325,7 @@ func Flock(fd int, how int) error {
 func Mlock(b []byte) (err error) {
 	_, _, e1 := syscall_syscall(SYS___MLOCKALL, _BPX_NONSWAP, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1333,7 +1333,7 @@ func Mlock(b []byte) (err error) {
 func Mlock2(b []byte, flags int) (err error) {
 	_, _, e1 := syscall_syscall(SYS___MLOCKALL, _BPX_NONSWAP, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1341,7 +1341,7 @@ func Mlock2(b []byte, flags int) (err error) {
 func Mlockall(flags int) (err error) {
 	_, _, e1 := syscall_syscall(SYS___MLOCKALL, _BPX_NONSWAP, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1349,7 +1349,7 @@ func Mlockall(flags int) (err error) {
 func Munlock(b []byte) (err error) {
 	_, _, e1 := syscall_syscall(SYS___MLOCKALL, _BPX_SWAP, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1357,7 +1357,7 @@ func Munlock(b []byte) (err error) {
 func Munlockall() (err error) {
 	_, _, e1 := syscall_syscall(SYS___MLOCKALL, _BPX_SWAP, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1402,35 +1402,6 @@ var (
 	Stdout = 1
 	Stderr = 2
 )
-
-// Do the interface allocations only once for common
-// Errno values.
-var (
-	errEAGAIN error = syscall.EAGAIN
-	errEINVAL error = syscall.EINVAL
-	errENOENT error = syscall.ENOENT
-)
-
-var (
-	signalNameMapOnce sync.Once
-	signalNameMap     map[string]syscall.Signal
-)
-
-// errnoErr returns common boxed Errno values, to prevent
-// allocations at runtime.
-func errnoErr(e Errno) error {
-	switch e {
-	case 0:
-		return nil
-	case EAGAIN:
-		return errEAGAIN
-	case EINVAL:
-		return errEINVAL
-	case ENOENT:
-		return errENOENT
-	}
-	return e
-}
 
 // ErrnoName returns the error name for error number e.
 func ErrnoName(e Errno) string {

@@ -109,7 +109,7 @@ func mmap(addr uintptr, length uintptr, prot int, flags int, fd int, offset int6
 	r0, _, e1 := Syscall(SYS_MMAP, uintptr(unsafe.Pointer(&mmap_args[0])), 0, 0)
 	xaddr = uintptr(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }

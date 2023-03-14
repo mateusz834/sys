@@ -18,7 +18,7 @@ var _ syscall.Errno
 func fanotifyMark(fd int, flags uint, mask uint64, dirFd int, pathname *byte) (err error) {
 	_, _, e1 := Syscall6(SYS_FANOTIFY_MARK, uintptr(fd), uintptr(flags), uintptr(mask), uintptr(mask>>32), uintptr(dirFd), uintptr(unsafe.Pointer(pathname)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -28,7 +28,7 @@ func fanotifyMark(fd int, flags uint, mask uint64, dirFd int, pathname *byte) (e
 func Fallocate(fd int, mode uint32, off int64, len int64) (err error) {
 	_, _, e1 := Syscall6(SYS_FALLOCATE, uintptr(fd), uintptr(mode), uintptr(off), uintptr(off>>32), uintptr(len), uintptr(len>>32))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -39,7 +39,7 @@ func Tee(rfd int, wfd int, len int, flags int) (n int64, err error) {
 	r0, r1, e1 := Syscall6(SYS_TEE, uintptr(rfd), uintptr(wfd), uintptr(len), uintptr(flags), 0, 0)
 	n = int64(int64(r1)<<32 | int64(r0))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -56,7 +56,7 @@ func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error) {
 	r0, _, e1 := Syscall6(SYS_EPOLL_WAIT, uintptr(epfd), uintptr(_p0), uintptr(len(events)), uintptr(msec), 0, 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -66,7 +66,7 @@ func EpollWait(epfd int, events []EpollEvent, msec int) (n int, err error) {
 func Fadvise(fd int, offset int64, length int64, advice int) (err error) {
 	_, _, e1 := Syscall6(SYS_FADVISE64_64, uintptr(fd), uintptr(offset), uintptr(offset>>32), uintptr(length), uintptr(length>>32), uintptr(advice))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -76,7 +76,7 @@ func Fadvise(fd int, offset int64, length int64, advice int) (err error) {
 func Fchown(fd int, uid int, gid int) (err error) {
 	_, _, e1 := Syscall(SYS_FCHOWN32, uintptr(fd), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -86,7 +86,7 @@ func Fchown(fd int, uid int, gid int) (err error) {
 func Fstat(fd int, stat *Stat_t) (err error) {
 	_, _, e1 := Syscall(SYS_FSTAT64, uintptr(fd), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -101,7 +101,7 @@ func Fstatat(dirfd int, path string, stat *Stat_t, flags int) (err error) {
 	}
 	_, _, e1 := Syscall6(SYS_FSTATAT64, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), uintptr(flags), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -111,7 +111,7 @@ func Fstatat(dirfd int, path string, stat *Stat_t, flags int) (err error) {
 func Ftruncate(fd int, length int64) (err error) {
 	_, _, e1 := Syscall(SYS_FTRUNCATE64, uintptr(fd), uintptr(length), uintptr(length>>32))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -153,7 +153,7 @@ func Getuid() (uid int) {
 func Ioperm(from int, num int, on int) (err error) {
 	_, _, e1 := Syscall(SYS_IOPERM, uintptr(from), uintptr(num), uintptr(on))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -163,7 +163,7 @@ func Ioperm(from int, num int, on int) (err error) {
 func Iopl(level int) (err error) {
 	_, _, e1 := Syscall(SYS_IOPL, uintptr(level), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -178,7 +178,7 @@ func Lchown(path string, uid int, gid int) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_LCHOWN32, uintptr(unsafe.Pointer(_p0)), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -193,7 +193,7 @@ func Lstat(path string, stat *Stat_t) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_LSTAT64, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -210,7 +210,7 @@ func pread(fd int, p []byte, offset int64) (n int, err error) {
 	r0, _, e1 := Syscall6(SYS_PREAD64, uintptr(fd), uintptr(_p0), uintptr(len(p)), uintptr(offset), uintptr(offset>>32), 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -227,7 +227,7 @@ func pwrite(fd int, p []byte, offset int64) (n int, err error) {
 	r0, _, e1 := Syscall6(SYS_PWRITE64, uintptr(fd), uintptr(_p0), uintptr(len(p)), uintptr(offset), uintptr(offset>>32), 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -247,7 +247,7 @@ func Renameat(olddirfd int, oldpath string, newdirfd int, newpath string) (err e
 	}
 	_, _, e1 := Syscall6(SYS_RENAMEAT, uintptr(olddirfd), uintptr(unsafe.Pointer(_p0)), uintptr(newdirfd), uintptr(unsafe.Pointer(_p1)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -258,7 +258,7 @@ func sendfile(outfd int, infd int, offset *int64, count int) (written int, err e
 	r0, _, e1 := Syscall6(SYS_SENDFILE64, uintptr(outfd), uintptr(infd), uintptr(unsafe.Pointer(offset)), uintptr(count), 0, 0)
 	written = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -269,7 +269,7 @@ func setfsgid(gid int) (prev int, err error) {
 	r0, _, e1 := Syscall(SYS_SETFSGID32, uintptr(gid), 0, 0)
 	prev = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -280,7 +280,7 @@ func setfsuid(uid int) (prev int, err error) {
 	r0, _, e1 := Syscall(SYS_SETFSUID32, uintptr(uid), 0, 0)
 	prev = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -291,7 +291,7 @@ func Splice(rfd int, roff *int64, wfd int, woff *int64, len int, flags int) (n i
 	r0, _, e1 := Syscall6(SYS_SPLICE, uintptr(rfd), uintptr(unsafe.Pointer(roff)), uintptr(wfd), uintptr(unsafe.Pointer(woff)), uintptr(len), uintptr(flags))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -306,7 +306,7 @@ func Stat(path string, stat *Stat_t) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_STAT64, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -316,7 +316,7 @@ func Stat(path string, stat *Stat_t) (err error) {
 func SyncFileRange(fd int, off int64, n int64, flags int) (err error) {
 	_, _, e1 := Syscall6(SYS_SYNC_FILE_RANGE, uintptr(fd), uintptr(off), uintptr(off>>32), uintptr(n), uintptr(n>>32), uintptr(flags))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -331,7 +331,7 @@ func Truncate(path string, length int64) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_TRUNCATE64, uintptr(unsafe.Pointer(_p0)), uintptr(length), uintptr(length>>32))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -341,7 +341,7 @@ func Truncate(path string, length int64) (err error) {
 func Ustat(dev int, ubuf *Ustat_t) (err error) {
 	_, _, e1 := Syscall(SYS_USTAT, uintptr(dev), uintptr(unsafe.Pointer(ubuf)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -352,7 +352,7 @@ func getgroups(n int, list *_Gid_t) (nn int, err error) {
 	r0, _, e1 := RawSyscall(SYS_GETGROUPS32, uintptr(n), uintptr(unsafe.Pointer(list)), 0)
 	nn = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -362,7 +362,7 @@ func getgroups(n int, list *_Gid_t) (nn int, err error) {
 func setgroups(n int, list *_Gid_t) (err error) {
 	_, _, e1 := RawSyscall(SYS_SETGROUPS32, uintptr(n), uintptr(unsafe.Pointer(list)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -373,7 +373,7 @@ func Select(nfd int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (n int, err
 	r0, _, e1 := Syscall6(SYS__NEWSELECT, uintptr(nfd), uintptr(unsafe.Pointer(r)), uintptr(unsafe.Pointer(w)), uintptr(unsafe.Pointer(e)), uintptr(unsafe.Pointer(timeout)), 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -384,7 +384,7 @@ func mmap2(addr uintptr, length uintptr, prot int, flags int, fd int, pageOffset
 	r0, _, e1 := Syscall6(SYS_MMAP2, uintptr(addr), uintptr(length), uintptr(prot), uintptr(flags), uintptr(fd), uintptr(pageOffset))
 	xaddr = uintptr(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -394,7 +394,7 @@ func mmap2(addr uintptr, length uintptr, prot int, flags int, fd int, pageOffset
 func Pause() (err error) {
 	_, _, e1 := Syscall(SYS_PAUSE, 0, 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -404,7 +404,7 @@ func Pause() (err error) {
 func getrlimit(resource int, rlim *rlimit32) (err error) {
 	_, _, e1 := RawSyscall(SYS_GETRLIMIT, uintptr(resource), uintptr(unsafe.Pointer(rlim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -414,7 +414,7 @@ func getrlimit(resource int, rlim *rlimit32) (err error) {
 func setrlimit(resource int, rlim *rlimit32) (err error) {
 	_, _, e1 := RawSyscall(SYS_SETRLIMIT, uintptr(resource), uintptr(unsafe.Pointer(rlim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -429,7 +429,7 @@ func futimesat(dirfd int, path string, times *[2]Timeval) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_FUTIMESAT, uintptr(dirfd), uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(times)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -439,7 +439,7 @@ func futimesat(dirfd int, path string, times *[2]Timeval) (err error) {
 func Gettimeofday(tv *Timeval) (err error) {
 	_, _, e1 := RawSyscall(SYS_GETTIMEOFDAY, uintptr(unsafe.Pointer(tv)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -450,7 +450,7 @@ func Time(t *Time_t) (tt Time_t, err error) {
 	r0, _, e1 := RawSyscall(SYS_TIME, uintptr(unsafe.Pointer(t)), 0, 0)
 	tt = Time_t(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -465,7 +465,7 @@ func Utime(path string, buf *Utimbuf) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_UTIME, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(buf)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -480,7 +480,7 @@ func utimes(path string, times *[2]Timeval) (err error) {
 	}
 	_, _, e1 := Syscall(SYS_UTIMES, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(times)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -491,7 +491,7 @@ func Alarm(seconds uint) (remaining uint, err error) {
 	r0, _, e1 := Syscall(SYS_ALARM, uintptr(seconds), 0, 0)
 	remaining = uint(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }

@@ -16,7 +16,7 @@ func fcntl(fd int, cmd int, arg int) (val int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_FCNTL, uintptr(fd), uintptr(cmd), uintptr(arg))
 	val = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -33,7 +33,7 @@ func read(fd int, p []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_READ, uintptr(fd), uintptr(_p0), uintptr(len(p)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -44,7 +44,7 @@ func readlen(fd int, buf *byte, nbuf int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_READ, uintptr(fd), uintptr(unsafe.Pointer(buf)), uintptr(nbuf))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -61,7 +61,7 @@ func write(fd int, p []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_WRITE, uintptr(fd), uintptr(_p0), uintptr(len(p)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -72,7 +72,7 @@ func accept(s int, rsa *RawSockaddrAny, addrlen *_Socklen) (fd int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___ACCEPT_A, uintptr(s), uintptr(unsafe.Pointer(rsa)), uintptr(unsafe.Pointer(addrlen)))
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -82,7 +82,7 @@ func accept(s int, rsa *RawSockaddrAny, addrlen *_Socklen) (fd int, err error) {
 func bind(s int, addr unsafe.Pointer, addrlen _Socklen) (err error) {
 	_, _, e1 := syscall_syscall(SYS___BIND_A, uintptr(s), uintptr(addr), uintptr(addrlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -92,7 +92,7 @@ func bind(s int, addr unsafe.Pointer, addrlen _Socklen) (err error) {
 func connect(s int, addr unsafe.Pointer, addrlen _Socklen) (err error) {
 	_, _, e1 := syscall_syscall(SYS___CONNECT_A, uintptr(s), uintptr(addr), uintptr(addrlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -103,7 +103,7 @@ func getgroups(n int, list *_Gid_t) (nn int, err error) {
 	r0, _, e1 := syscall_rawsyscall(SYS_GETGROUPS, uintptr(n), uintptr(unsafe.Pointer(list)), 0)
 	nn = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -113,7 +113,7 @@ func getgroups(n int, list *_Gid_t) (nn int, err error) {
 func setgroups(n int, list *_Gid_t) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_SETGROUPS, uintptr(n), uintptr(unsafe.Pointer(list)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -123,7 +123,7 @@ func setgroups(n int, list *_Gid_t) (err error) {
 func getsockopt(s int, level int, name int, val unsafe.Pointer, vallen *_Socklen) (err error) {
 	_, _, e1 := syscall_syscall6(SYS_GETSOCKOPT, uintptr(s), uintptr(level), uintptr(name), uintptr(val), uintptr(unsafe.Pointer(vallen)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -133,7 +133,7 @@ func getsockopt(s int, level int, name int, val unsafe.Pointer, vallen *_Socklen
 func setsockopt(s int, level int, name int, val unsafe.Pointer, vallen uintptr) (err error) {
 	_, _, e1 := syscall_syscall6(SYS_SETSOCKOPT, uintptr(s), uintptr(level), uintptr(name), uintptr(val), uintptr(vallen), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -144,7 +144,7 @@ func socket(domain int, typ int, proto int) (fd int, err error) {
 	r0, _, e1 := syscall_rawsyscall(SYS_SOCKET, uintptr(domain), uintptr(typ), uintptr(proto))
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -154,7 +154,7 @@ func socket(domain int, typ int, proto int) (fd int, err error) {
 func socketpair(domain int, typ int, proto int, fd *[2]int32) (err error) {
 	_, _, e1 := syscall_rawsyscall6(SYS_SOCKETPAIR, uintptr(domain), uintptr(typ), uintptr(proto), uintptr(unsafe.Pointer(fd)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -164,7 +164,7 @@ func socketpair(domain int, typ int, proto int, fd *[2]int32) (err error) {
 func getpeername(fd int, rsa *RawSockaddrAny, addrlen *_Socklen) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS___GETPEERNAME_A, uintptr(fd), uintptr(unsafe.Pointer(rsa)), uintptr(unsafe.Pointer(addrlen)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -174,7 +174,7 @@ func getpeername(fd int, rsa *RawSockaddrAny, addrlen *_Socklen) (err error) {
 func getsockname(fd int, rsa *RawSockaddrAny, addrlen *_Socklen) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS___GETSOCKNAME_A, uintptr(fd), uintptr(unsafe.Pointer(rsa)), uintptr(unsafe.Pointer(addrlen)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -191,7 +191,7 @@ func recvfrom(fd int, p []byte, flags int, from *RawSockaddrAny, fromlen *_Sockl
 	r0, _, e1 := syscall_syscall6(SYS___RECVFROM_A, uintptr(fd), uintptr(_p0), uintptr(len(p)), uintptr(flags), uintptr(unsafe.Pointer(from)), uintptr(unsafe.Pointer(fromlen)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -207,7 +207,7 @@ func sendto(s int, buf []byte, flags int, to unsafe.Pointer, addrlen _Socklen) (
 	}
 	_, _, e1 := syscall_syscall6(SYS___SENDTO_A, uintptr(s), uintptr(_p0), uintptr(len(buf)), uintptr(flags), uintptr(to), uintptr(addrlen))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -218,7 +218,7 @@ func recvmsg(s int, msg *Msghdr, flags int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___RECVMSG_A, uintptr(s), uintptr(unsafe.Pointer(msg)), uintptr(flags))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -229,7 +229,7 @@ func sendmsg(s int, msg *Msghdr, flags int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___SENDMSG_A, uintptr(s), uintptr(unsafe.Pointer(msg)), uintptr(flags))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -240,7 +240,7 @@ func mmap(addr uintptr, length uintptr, prot int, flag int, fd int, pos int64) (
 	r0, _, e1 := syscall_syscall6(SYS_MMAP, uintptr(addr), uintptr(length), uintptr(prot), uintptr(flag), uintptr(fd), uintptr(pos))
 	ret = uintptr(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -250,7 +250,7 @@ func mmap(addr uintptr, length uintptr, prot int, flag int, fd int, pos int64) (
 func munmap(addr uintptr, length uintptr) (err error) {
 	_, _, e1 := syscall_syscall(SYS_MUNMAP, uintptr(addr), uintptr(length), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -260,7 +260,7 @@ func munmap(addr uintptr, length uintptr) (err error) {
 func ioctl(fd int, req uint, arg uintptr) (err error) {
 	_, _, e1 := syscall_syscall(SYS_IOCTL, uintptr(fd), uintptr(req), uintptr(arg))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -270,7 +270,7 @@ func ioctl(fd int, req uint, arg uintptr) (err error) {
 func ioctlPtr(fd int, req uint, arg unsafe.Pointer) (err error) {
 	_, _, e1 := syscall_syscall(SYS_IOCTL, uintptr(fd), uintptr(req), uintptr(arg))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -285,7 +285,7 @@ func Access(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___ACCESS_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -300,7 +300,7 @@ func Chdir(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___CHDIR_A, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -315,7 +315,7 @@ func Chown(path string, uid int, gid int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___CHOWN_A, uintptr(unsafe.Pointer(_p0)), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -330,7 +330,7 @@ func Chmod(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___CHMOD_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -346,7 +346,7 @@ func Creat(path string, mode uint32) (fd int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___CREAT_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -357,7 +357,7 @@ func Dup(oldfd int) (fd int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_DUP, uintptr(oldfd), 0, 0)
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -367,7 +367,7 @@ func Dup(oldfd int) (fd int, err error) {
 func Dup2(oldfd int, newfd int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_DUP2, uintptr(oldfd), uintptr(newfd), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -400,7 +400,7 @@ func Exit(code int) {
 func Fchdir(fd int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FCHDIR, uintptr(fd), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -410,7 +410,7 @@ func Fchdir(fd int) (err error) {
 func Fchmod(fd int, mode uint32) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FCHMOD, uintptr(fd), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -420,7 +420,7 @@ func Fchmod(fd int, mode uint32) (err error) {
 func Fchown(fd int, uid int, gid int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FCHOWN, uintptr(fd), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -431,7 +431,7 @@ func FcntlInt(fd uintptr, cmd int, arg int) (retval int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_FCNTL, uintptr(fd), uintptr(cmd), uintptr(arg))
 	retval = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -441,7 +441,7 @@ func FcntlInt(fd uintptr, cmd int, arg int) (retval int, err error) {
 func fstat(fd int, stat *Stat_LE_t) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FSTAT, uintptr(fd), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -451,7 +451,7 @@ func fstat(fd int, stat *Stat_LE_t) (err error) {
 func Fstatvfs(fd int, stat *Statvfs_t) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FSTATVFS, uintptr(fd), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -461,7 +461,7 @@ func Fstatvfs(fd int, stat *Statvfs_t) (err error) {
 func Fsync(fd int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FSYNC, uintptr(fd), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -471,7 +471,7 @@ func Fsync(fd int) (err error) {
 func Ftruncate(fd int, length int64) (err error) {
 	_, _, e1 := syscall_syscall(SYS_FTRUNCATE, uintptr(fd), uintptr(length), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -495,7 +495,7 @@ func Mprotect(b []byte, prot int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS_MPROTECT, uintptr(_p0), uintptr(len(b)), uintptr(prot))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -511,7 +511,7 @@ func Msync(b []byte, flags int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS_MSYNC, uintptr(_p0), uintptr(len(b)), uintptr(flags))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -528,7 +528,7 @@ func Poll(fds []PollFd, timeout int) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_POLL, uintptr(_p0), uintptr(len(fds)), uintptr(timeout))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -539,7 +539,7 @@ func Times(tms *Tms) (ticks uintptr, err error) {
 	r0, _, e1 := syscall_syscall(SYS_TIMES, uintptr(unsafe.Pointer(tms)), 0, 0)
 	ticks = uintptr(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -550,7 +550,7 @@ func W_Getmntent(buff *byte, size int) (lastsys int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_W_GETMNTENT, uintptr(unsafe.Pointer(buff)), uintptr(size), 0)
 	lastsys = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -561,7 +561,7 @@ func W_Getmntent_A(buff *byte, size int) (lastsys int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___W_GETMNTENT_A, uintptr(unsafe.Pointer(buff)), uintptr(size), 0)
 	lastsys = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -591,7 +591,7 @@ func mount_LE(path string, filesystem string, fstype string, mtm uint32, parmlen
 	}
 	_, _, e1 := syscall_syscall6(SYS___MOUNT_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), uintptr(unsafe.Pointer(_p2)), uintptr(mtm), uintptr(parmlen), uintptr(unsafe.Pointer(_p3)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -606,7 +606,7 @@ func unmount(filesystem string, mtm int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___UMOUNT_A, uintptr(unsafe.Pointer(_p0)), uintptr(mtm), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -621,7 +621,7 @@ func Chroot(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___CHROOT_A, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -631,7 +631,7 @@ func Chroot(path string) (err error) {
 func Uname(buf *Utsname) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS___UNAME_A, uintptr(unsafe.Pointer(buf)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -647,7 +647,7 @@ func Gethostname(buf []byte) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___GETHOSTNAME_A, uintptr(_p0), uintptr(len(buf)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -690,7 +690,7 @@ func Getpgid(pid int) (pgid int, err error) {
 	r0, _, e1 := syscall_rawsyscall(SYS_GETPGID, uintptr(pid), 0, 0)
 	pgid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -709,7 +709,7 @@ func Getpriority(which int, who int) (prio int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_GETPRIORITY, uintptr(which), uintptr(who), 0)
 	prio = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -719,7 +719,7 @@ func Getpriority(which int, who int) (prio int, err error) {
 func Getrlimit(resource int, rlim *Rlimit) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_GETRLIMIT, uintptr(resource), uintptr(unsafe.Pointer(rlim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -729,7 +729,7 @@ func Getrlimit(resource int, rlim *Rlimit) (err error) {
 func getrusage(who int, rusage *rusage_zos) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_GETRUSAGE, uintptr(who), uintptr(unsafe.Pointer(rusage)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -740,7 +740,7 @@ func Getsid(pid int) (sid int, err error) {
 	r0, _, e1 := syscall_rawsyscall(SYS_GETSID, uintptr(pid), 0, 0)
 	sid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -758,7 +758,7 @@ func Getuid() (uid int) {
 func Kill(pid int, sig Signal) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_KILL, uintptr(pid), uintptr(sig), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -773,7 +773,7 @@ func Lchown(path string, uid int, gid int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___LCHOWN_A, uintptr(unsafe.Pointer(_p0)), uintptr(uid), uintptr(gid))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -793,7 +793,7 @@ func Link(path string, link string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___LINK_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -803,7 +803,7 @@ func Link(path string, link string) (err error) {
 func Listen(s int, n int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_LISTEN, uintptr(s), uintptr(n), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -818,7 +818,7 @@ func lstat(path string, stat *Stat_LE_t) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___LSTAT_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(stat)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -833,7 +833,7 @@ func Mkdir(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___MKDIR_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -848,7 +848,7 @@ func Mkfifo(path string, mode uint32) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___MKFIFO_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -863,7 +863,7 @@ func Mknod(path string, mode uint32, dev int) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___MKNOD_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(dev))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -880,7 +880,7 @@ func Pread(fd int, p []byte, offset int64) (n int, err error) {
 	r0, _, e1 := syscall_syscall6(SYS_PREAD, uintptr(fd), uintptr(_p0), uintptr(len(p)), uintptr(offset), 0, 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -897,7 +897,7 @@ func Pwrite(fd int, p []byte, offset int64) (n int, err error) {
 	r0, _, e1 := syscall_syscall6(SYS_PWRITE, uintptr(fd), uintptr(_p0), uintptr(len(p)), uintptr(offset), 0, 0)
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -919,7 +919,7 @@ func Readlink(path string, buf []byte) (n int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___READLINK_A, uintptr(unsafe.Pointer(_p0)), uintptr(_p1), uintptr(len(buf)))
 	n = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -939,7 +939,7 @@ func Rename(from string, to string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___RENAME_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -954,7 +954,7 @@ func Rmdir(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___RMDIR_A, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -965,7 +965,7 @@ func Seek(fd int, offset int64, whence int) (off int64, err error) {
 	r0, _, e1 := syscall_syscall(SYS_LSEEK, uintptr(fd), uintptr(offset), uintptr(whence))
 	off = int64(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -975,7 +975,7 @@ func Seek(fd int, offset int64, whence int) (off int64, err error) {
 func Setpriority(which int, who int, prio int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_SETPRIORITY, uintptr(which), uintptr(who), uintptr(prio))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -985,7 +985,7 @@ func Setpriority(which int, who int, prio int) (err error) {
 func Setpgid(pid int, pgid int) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_SETPGID, uintptr(pid), uintptr(pgid), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -995,7 +995,7 @@ func Setpgid(pid int, pgid int) (err error) {
 func Setrlimit(resource int, lim *Rlimit) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_SETRLIMIT, uintptr(resource), uintptr(unsafe.Pointer(lim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1005,7 +1005,7 @@ func Setrlimit(resource int, lim *Rlimit) (err error) {
 func Setregid(rgid int, egid int) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_SETREGID, uintptr(rgid), uintptr(egid), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1015,7 +1015,7 @@ func Setregid(rgid int, egid int) (err error) {
 func Setreuid(ruid int, euid int) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_SETREUID, uintptr(ruid), uintptr(euid), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1026,7 +1026,7 @@ func Setsid() (pid int, err error) {
 	r0, _, e1 := syscall_rawsyscall(SYS_SETSID, 0, 0, 0)
 	pid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1036,7 +1036,7 @@ func Setsid() (pid int, err error) {
 func Setuid(uid int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_SETUID, uintptr(uid), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1046,7 +1046,7 @@ func Setuid(uid int) (err error) {
 func Setgid(uid int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_SETGID, uintptr(uid), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1056,7 +1056,7 @@ func Setgid(uid int) (err error) {
 func Shutdown(fd int, how int) (err error) {
 	_, _, e1 := syscall_syscall(SYS_SHUTDOWN, uintptr(fd), uintptr(how), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1071,7 +1071,7 @@ func stat(path string, statLE *Stat_LE_t) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___STAT_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(statLE)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1091,7 +1091,7 @@ func Symlink(path string, link string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___SYMLINK_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(_p1)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1113,7 +1113,7 @@ func Truncate(path string, length int64) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___TRUNCATE_A, uintptr(unsafe.Pointer(_p0)), uintptr(length), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1123,7 +1123,7 @@ func Truncate(path string, length int64) (err error) {
 func Tcgetattr(fildes int, termptr *Termios) (err error) {
 	_, _, e1 := syscall_syscall(SYS_TCGETATTR, uintptr(fildes), uintptr(unsafe.Pointer(termptr)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1133,7 +1133,7 @@ func Tcgetattr(fildes int, termptr *Termios) (err error) {
 func Tcsetattr(fildes int, when int, termptr *Termios) (err error) {
 	_, _, e1 := syscall_syscall(SYS_TCSETATTR, uintptr(fildes), uintptr(when), uintptr(unsafe.Pointer(termptr)))
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1156,7 +1156,7 @@ func Unlink(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___UNLINK_A, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1171,7 +1171,7 @@ func Utime(path string, utim *Utimbuf) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___UTIME_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(utim)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1187,7 +1187,7 @@ func open(path string, mode int, perm uint32) (fd int, err error) {
 	r0, _, e1 := syscall_syscall(SYS___OPEN_A, uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(perm))
 	fd = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1202,7 +1202,7 @@ func remove(path string) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS_REMOVE, uintptr(unsafe.Pointer(_p0)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1213,7 +1213,7 @@ func waitpid(pid int, wstatus *_C_int, options int) (wpid int, err error) {
 	r0, _, e1 := syscall_syscall(SYS_WAITPID, uintptr(pid), uintptr(unsafe.Pointer(wstatus)), uintptr(options))
 	wpid = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1223,7 +1223,7 @@ func waitpid(pid int, wstatus *_C_int, options int) (wpid int, err error) {
 func gettimeofday(tv *timeval_zos) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_GETTIMEOFDAY, uintptr(unsafe.Pointer(tv)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1233,7 +1233,7 @@ func gettimeofday(tv *timeval_zos) (err error) {
 func pipe(p *[2]_C_int) (err error) {
 	_, _, e1 := syscall_rawsyscall(SYS_PIPE, uintptr(unsafe.Pointer(p)), 0, 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1248,7 +1248,7 @@ func utimes(path string, timeval *[2]Timeval) (err error) {
 	}
 	_, _, e1 := syscall_syscall(SYS___UTIMES_A, uintptr(unsafe.Pointer(_p0)), uintptr(unsafe.Pointer(timeval)), 0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -1259,7 +1259,7 @@ func Select(nmsgsfds int, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval) (ret i
 	r0, _, e1 := syscall_syscall6(SYS_SELECT, uintptr(nmsgsfds), uintptr(unsafe.Pointer(r)), uintptr(unsafe.Pointer(w)), uintptr(unsafe.Pointer(e)), uintptr(unsafe.Pointer(timeout)), 0)
 	ret = int(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }

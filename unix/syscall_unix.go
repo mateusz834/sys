@@ -21,34 +21,10 @@ var (
 	Stderr = 2
 )
 
-// Do the interface allocations only once for common
-// Errno values.
-var (
-	errEAGAIN error = syscall.EAGAIN
-	errEINVAL error = syscall.EINVAL
-	errENOENT error = syscall.ENOENT
-)
-
 var (
 	signalNameMapOnce sync.Once
 	signalNameMap     map[string]syscall.Signal
 )
-
-// errnoErr returns common boxed Errno values, to prevent
-// allocations at runtime.
-func errnoErr(e syscall.Errno) error {
-	switch e {
-	case 0:
-		return nil
-	case EAGAIN:
-		return errEAGAIN
-	case EINVAL:
-		return errEINVAL
-	case ENOENT:
-		return errENOENT
-	}
-	return e
-}
 
 // ErrnoName returns the error name for error number e.
 func ErrnoName(e syscall.Errno) string {

@@ -72,7 +72,7 @@ func Syscall9(trap, a1, a2, a3, a4, a5, a6, a7, a8, a9 uintptr) (r1, r2 uintptr,
 func Fstatfs(fd int, buf *Statfs_t) (err error) {
 	_, _, e := Syscall(SYS_FSTATFS64, uintptr(fd), unsafe.Sizeof(*buf), uintptr(unsafe.Pointer(buf)))
 	if e != 0 {
-		err = errnoErr(e)
+		err = e
 	}
 	return
 }
@@ -84,7 +84,7 @@ func Statfs(path string, buf *Statfs_t) (err error) {
 	}
 	_, _, e := Syscall(SYS_STATFS64, uintptr(unsafe.Pointer(p)), unsafe.Sizeof(*buf), uintptr(unsafe.Pointer(buf)))
 	if e != 0 {
-		err = errnoErr(e)
+		err = e
 	}
 	return
 }
@@ -92,7 +92,7 @@ func Statfs(path string, buf *Statfs_t) (err error) {
 func Seek(fd int, offset int64, whence int) (off int64, err error) {
 	_, _, e := Syscall6(SYS__LLSEEK, uintptr(fd), uintptr(offset>>32), uintptr(offset), uintptr(unsafe.Pointer(&off)), uintptr(whence), 0)
 	if e != 0 {
-		err = errnoErr(e)
+		err = e
 	}
 	return
 }

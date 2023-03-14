@@ -19,7 +19,7 @@ type CPUSet [cpuSetSize]cpuMask
 func schedAffinity(trap uintptr, pid int, set *CPUSet) error {
 	_, _, e := RawSyscall(trap, uintptr(pid), uintptr(unsafe.Sizeof(*set)), uintptr(unsafe.Pointer(set)))
 	if e != 0 {
-		return errnoErr(e)
+		return e
 	}
 	return nil
 }

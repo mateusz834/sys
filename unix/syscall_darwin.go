@@ -25,7 +25,7 @@ func fdopendir(fd int) (dir uintptr, err error) {
 	r0, _, e1 := syscall_syscallPtr(libc_fdopendir_trampoline_addr, uintptr(fd), 0, 0)
 	dir = uintptr(r0)
 	if e1 != 0 {
-		err = errnoErr(e1)
+		err = e1
 	}
 	return
 }
@@ -70,7 +70,7 @@ func Getdirentries(fd int, buf []byte, basep *uintptr) (n int, err error) {
 		var entryp *Dirent
 		e := readdir_r(d, &entry, &entryp)
 		if e != 0 {
-			return n, errnoErr(e)
+			return n, e
 		}
 		if entryp == nil {
 			break

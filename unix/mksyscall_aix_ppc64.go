@@ -463,7 +463,7 @@ func main() {
 
 			if doErrno {
 				textcommon += "\tif e1 != 0 {\n"
-				textcommon += "\t\terr = errnoErr(e1)\n"
+				textcommon += "\t\terr = e1\n"
 				textcommon += "\t}\n"
 			}
 			textcommon += "\treturn\n"
